@@ -1,14 +1,14 @@
 <template>
   <div id="app">
     <div id="nav">
+      <div v-if="authState === 'signedin' && user">
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link> |
       <router-link to="/register">Register</router-link> |
-      <router-link to="/login">Login</router-link> |
-      <button @click="logout">Logout</button>
+      <router-link to="/login">Login</router-link> 
+      
+      <amplify-greetings :username="user.username" ></amplify-greetings>
     </div>
-    <router-view />
-    <div>
       <div v-if="authState !== 'signedin'">You are signed out.</div>
       <amplify-authenticator>
         <div v-if="authState === 'signedin' && user">
@@ -16,10 +16,16 @@
           <textarea>Hello Luke I am your father</textarea>
         </div>
         <amplify-sign-out></amplify-sign-out>
+        <amplify-sign-in
+          header-text="NZ Kendo Federation Login"
+          slot="sign-in"
+        ></amplify-sign-in>
+        <amplify-sign-up
+          header-text="Create a NZ Kendo Federation Account"
+          slot="sign-up"
+        ></amplify-sign-up>
       </amplify-authenticator>
     </div>
-
-    
   </div>
 </template>
 
@@ -40,6 +46,21 @@ export default {
       user: undefined,
       authState: undefined,
       unsubscribeAuth: undefined,
+      // formFields: [
+      //   {
+      //     type: 'email',
+      //     label: 'Custom Email Label',
+      //     placeholder: 'Custom email placeholder',
+      //     inputProps: { required: true, autocomplete: 'username' },
+      //   },
+      //   {
+      //     type: 'password',
+      //     label: 'I have no clue what this does',
+      //     placeholder: 'Not working',
+      //     inputProps: { required: true, autocomplete: 'Not working' },
+      //   },
+       
+      // ],
     };
   },
   beforeUnmount() {
