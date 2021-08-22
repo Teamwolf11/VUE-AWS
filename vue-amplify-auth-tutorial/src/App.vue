@@ -7,23 +7,44 @@
       <router-link to="/login">Login</router-link> |
       <button @click="logout">Logout</button>
     </div>
-    <router-view/>
+    <router-view />
+    <div>
+      <div v-if="authState !== 'signedin'">You are signed out.</div>
+      <amplify-authenticator>
+        <div v-if="authState === 'signedin' && user">
+          <div>Hello, {{ user.username }}</div>
+          <textarea>Hello Luke I am your father</textarea>
+        </div>
+        <amplify-sign-out></amplify-sign-out>
+      </amplify-authenticator>
+    </div>
+
+    
   </div>
 </template>
 
+
 <script>
-import { Auth } from 'aws-amplify';
+import { onAuthUIStateChange } from "@aws-amplify/ui-components";
+
 export default {
-    name: 'App',
-    methods: {
-        async logout() {
-            try {
-                await Auth.signOut();
-            } catch (error) {
-                alert(error.message);
-            }
-        },
-    },
+  name: "AuthStateApp",
+  created() {
+    this.unsubscribeAuth = onAuthUIStateChange((authState, authData) => {
+      this.authState = authState;
+      this.user = authData;
+    });
+  },
+  data() {
+    return {
+      user: undefined,
+      authState: undefined,
+      unsubscribeAuth: undefined,
+    };
+  },
+  beforeUnmount() {
+    this.unsubscribeAuth();
+  },
 };
 </script>
 
@@ -49,7 +70,7 @@ export default {
   color: #42b983;
 }
 
-:input {   
-  margin-right: 10px; 
+:input {
+  margin-right: 10px;
 }
 </style>
