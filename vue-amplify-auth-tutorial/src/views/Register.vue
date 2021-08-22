@@ -16,3 +16,31 @@
     </form>
 </div>
 </template>
+
+<script>
+import { Auth } from 'aws-amplify';
+
+export default {
+    data() {
+        return {
+            email: '',
+            password: '',
+        };
+    },
+    methods: {
+        async register() {
+            try {
+            await Auth.signUp({
+                username: this.email,
+                password: this.password,
+            });
+            alert('User successfully registered. Please login');
+            } catch (error) {
+            alert(error.message);
+            }
+        },
+    },  
+};
+
+</script>
+

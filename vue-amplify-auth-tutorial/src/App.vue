@@ -1,11 +1,31 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link> |
-    <router-link to="/register">Register</router-link>
+  <div id="app">
+    <div id="nav">
+      <router-link to="/">Home</router-link> |
+      <router-link to="/about">About</router-link> |
+      <router-link to="/register">Register</router-link> |
+      <router-link to="/login">Login</router-link> |
+      <button @click="logout">Logout</button>
+    </div>
+    <router-view/>
   </div>
-  <router-view/>
 </template>
+
+<script>
+import { Auth } from 'aws-amplify';
+export default {
+    name: 'App',
+    methods: {
+        async logout() {
+            try {
+                await Auth.signOut();
+            } catch (error) {
+                alert(error.message);
+            }
+        },
+    },
+};
+</script>
 
 <style>
 #app {
