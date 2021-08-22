@@ -1,4 +1,4 @@
-# vue-amplify-auth-tutorial
+# Mike and Ben's VUE learn project
 
 ## Project setup
 ```
